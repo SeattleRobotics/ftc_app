@@ -7,9 +7,12 @@ public abstract class CraterDescendSampleRun extends StandardChassis {
 
     private boolean madeTheRun = false;
     private GoldStatus pos = GoldStatus.Unknown;
+    private long delay;
 
-    protected CraterDescendSampleRun(ChassisConfig config) {
+
+    public CraterDescendSampleRun(ChassisConfig config, long delay) {
         super(config);
+        this.delay = delay;
     }
 
     /**
@@ -18,11 +21,12 @@ public abstract class CraterDescendSampleRun extends StandardChassis {
     @Override
     public void init() {
         initMotors();
-        initArm();
-        initGyroscope();
         initTimeouts();
         initSampling();
+        initGyroscope();
     }
+
+
 
     /**
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
@@ -58,10 +62,14 @@ public abstract class CraterDescendSampleRun extends StandardChassis {
 
             pos = loopSampling();
 
-            descendFromLander();
+            boolean goBackDown = (delay > 0);
+
+            descendFromLander(goBackDown);
 
             if (pos == GoldStatus.Unknown)
                 pos = sampleProbe();
+
+            sleep(delay);
 
             craterSampleRun(pos);
 

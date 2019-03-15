@@ -59,7 +59,7 @@ public abstract class StandardChassis extends OpMode {
     private BNO055IMU bosch;
 
     // Hack stuff.
-    protected boolean useBulldozer =false;
+    protected boolean useBulldozer = false;
     protected boolean useGyroScope = true;
     protected boolean useMotors = true;
     protected boolean useTeamMarker = true;
@@ -76,7 +76,6 @@ public abstract class StandardChassis extends OpMode {
     /*
      *  SAMPLING SUBSYSTEM
      */
-
 
 
     protected void initSampling() {
@@ -104,37 +103,37 @@ public abstract class StandardChassis extends OpMode {
     }
 
     protected GoldStatus loopSampling() {
-      if (useSampling) {
-          int numFailures = 0;
-          for (int i = 0 ; i < 10 ; i++) {
-              if (detector.isFound()) {
+        if (useSampling) {
+            int numFailures = 0;
+            for (int i = 0; i < 10; i++) {
+                if (detector.isFound()) {
 
-                  int gY = (int) detector.getScreenPosition().x;
-                  if (gY <= 200) {
-                      goldStatus = GoldStatus.Left;
-                  } else if (gY > 450) {
-                      goldStatus = GoldStatus.Right;
-                  } else {
-                      goldStatus = GoldStatus.Center;
-                  }
+                    int gY = (int) detector.getScreenPosition().x;
+                    if (gY <= 200) {
+                        goldStatus = GoldStatus.Left;
+                    } else if (gY > 450) {
+                        goldStatus = GoldStatus.Right;
+                    } else {
+                        goldStatus = GoldStatus.Center;
+                    }
 
-                  telemetry.addData("sampler", "FOUND, pos=" +
-                          String.valueOf(detector.getScreenPosition()) + "gStatus =" + String.valueOf(goldStatus));
-                  telemetry.update();
-                  return goldStatus;
-              }
+                    telemetry.addData("sampler", "FOUND, pos=" +
+                            String.valueOf(detector.getScreenPosition()) + "gStatus =" + String.valueOf(goldStatus));
+                    telemetry.update();
+                    return goldStatus;
+                }
 
 
-              // We could not find the gold jewel at all!
-              numFailures++;
-              telemetry.addData("sampler", "NOT FOUND, failures=" + numFailures);
-              telemetry.update();
-              sleep(500);
-              //goldStatus = GoldStatus.Unknown;
-          }
-      }
+                // We could not find the gold jewel at all!
+                numFailures++;
+                telemetry.addData("sampler", "NOT FOUND, failures=" + numFailures);
+                telemetry.update();
+                sleep(500);
+                //goldStatus = GoldStatus.Unknown;
+            }
+        }
 
-      return goldStatus;
+        return goldStatus;
     }
 
 
@@ -212,12 +211,12 @@ public abstract class StandardChassis extends OpMode {
         }
     }
 
-     protected void initBulldDozer() {
-         if(useBulldozer){
-             bull = hardwareMap.get(Servo.class, "servo3");
-             dozer = hardwareMap.get(Servo.class, "servo2");
-         }
-     }
+    protected void initBulldDozer() {
+        if (useBulldozer) {
+            bull = hardwareMap.get(Servo.class, "servo3");
+            dozer = hardwareMap.get(Servo.class, "servo2");
+        }
+    }
 
 
     protected void bullDozerUp() {
@@ -255,10 +254,9 @@ public abstract class StandardChassis extends OpMode {
     }
 
 
-
     public void dropFlag() {
         if (useTeamMarker) {
-            if(config.isTeamMarkerReversed()) {
+            if (config.isTeamMarkerReversed()) {
                 angleHand = 1.0;
             } else {
                 angleHand = 0.0;
@@ -269,7 +267,7 @@ public abstract class StandardChassis extends OpMode {
 
     public void resetFlag() {
         if (useTeamMarker) {
-            if(config.isTeamMarkerReversed()) {
+            if (config.isTeamMarkerReversed()) {
                 angleHand = 0.0;
             } else {
                 angleHand = 1.0;
@@ -292,8 +290,8 @@ public abstract class StandardChassis extends OpMode {
         int leftFrontStart = 0;
         int rightFrontStart = 0;
         if (config.getUseFourWheelDrive()) {
-             leftFrontStart = motorFrontLeft.getCurrentPosition();
-             rightFrontStart = motorFrontRight.getCurrentPosition();
+            leftFrontStart = motorFrontLeft.getCurrentPosition();
+            rightFrontStart = motorFrontRight.getCurrentPosition();
         }
         telemetry.addData("encoderDrive", "Starting %7d, %7d, %7d, %7d",
                 leftBackStart, rightBackStart, leftFrontStart, rightFrontStart);
@@ -304,8 +302,8 @@ public abstract class StandardChassis extends OpMode {
         int leftFrontTarget = 0;
         int rightFrontTarget = 0;
         if (config.getUseFourWheelDrive()) {
-             leftFrontTarget = leftFrontStart + (int) (leftInches * countsPerInch);
-             rightFrontTarget = rightFrontStart + (int) (rightInches * countsPerInch);
+            leftFrontTarget = leftFrontStart + (int) (leftInches * countsPerInch);
+            rightFrontTarget = rightFrontStart + (int) (rightInches * countsPerInch);
         }
 
         motorBackLeft.setTargetPosition(leftBackTarget);
@@ -406,7 +404,7 @@ public abstract class StandardChassis extends OpMode {
 
     // Always returns a number from 0-359.9999
     protected float getGyroscopeAngle() {
-        if (useGyroScope && bosch != null){
+        if (useGyroScope && bosch != null) {
             Orientation exangles = bosch.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             float gyroAngle = exangles.thirdAngle + 50;
             return CrazyAngle.normalizeAngle(CrazyAngle.reverseAngle(gyroAngle));
@@ -416,14 +414,12 @@ public abstract class StandardChassis extends OpMode {
     }
 
 
-
     /**
-     *
      * @param deltaAngle
      */
     protected void turnLeft(float deltaAngle) {
-        assert(deltaAngle > 0.0);
-        assert(deltaAngle <= 360.0);
+        assert (deltaAngle > 0.0);
+        assert (deltaAngle <= 360.0);
 
         // does it wrap at all? (go around the zero mark?)
         float currentAngle = getGyroscopeAngle();
@@ -463,12 +459,11 @@ public abstract class StandardChassis extends OpMode {
     }
 
     /**
-     *
      * @param deltaAngle
      */
     protected void turnRight(float deltaAngle) {
-        assert(deltaAngle > 0.0);
-        assert(deltaAngle <= 360.0);
+        assert (deltaAngle > 0.0);
+        assert (deltaAngle <= 360.0);
 
         // does it wrap at all?
         float currentAngle = getGyroscopeAngle();
@@ -546,7 +541,6 @@ public abstract class StandardChassis extends OpMode {
             motorFrontRight.setPower(0);
         }
     }
-
 
 
     protected void nudgeBack() {
@@ -685,11 +679,17 @@ public abstract class StandardChassis extends OpMode {
     }
 
     protected void descendFromLander() {
+        descendFromLander(true);
+    }
+
+    protected void descendFromLander(boolean goBackDown) {
         if(!config.getlyftStrategy()) {
             // go down.
             lyftDownEve(13930);
             encoderDrive(7);
-            lyftDownEve(-13910);
+            if (goBackDown) {
+                lyftDownEve(-13910);
+            }
         } else {
             lyftDownEve(-1449);
             //write new phatswipe descend strategy
