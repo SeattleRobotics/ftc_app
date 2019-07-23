@@ -110,7 +110,7 @@ public abstract class StandardChassis extends OpMode {
               if (detector.isFound()) {
 
                   int gY = (int) detector.getScreenPosition().x;
-                  if (gY < 200) {
+                  if (gY <= 200) {
                       goldStatus = GoldStatus.Left;
                   } else if (gY > 450) {
                       goldStatus = GoldStatus.Right;
@@ -269,7 +269,11 @@ public abstract class StandardChassis extends OpMode {
 
     public void resetFlag() {
         if (useTeamMarker) {
-            angleHand = 0.5;
+            if(config.isTeamMarkerReversed()) {
+                angleHand = 0.0;
+            } else {
+                angleHand = 1.0;
+            }
             flagHolder.setPosition(angleHand);
         }
     }
@@ -684,8 +688,8 @@ public abstract class StandardChassis extends OpMode {
         if(!config.getlyftStrategy()) {
             // go down.
             lyftDownEve(13930);
-            encoderDrive(10);
-            lyftDownEve(-13930);
+            encoderDrive(7);
+            lyftDownEve(-13910);
         } else {
             lyftDownEve(-1449);
             //write new phatswipe descend strategy
@@ -778,53 +782,66 @@ public abstract class StandardChassis extends OpMode {
 
     protected void depotRun() {
         encoderDrive(52, 52);
+        flagUpDown();
     }
 
 
     protected void craterSampleRun(){
         GoldStatus pos = sampleProbe();
-        if (pos == GoldStatus.Left) {
-            encoderDrive(10);
-            turnLeft(90);
-            encoderDrive(10);
-            turnRight(75);
-            encoderDrive(30);
+        craterSampleRun(pos);
+    }
+
+    protected void craterSampleRun(GoldStatus pos){
+        if (pos == GoldStatus.Center) {
+            encoderDrive(45);
         } else if (pos == GoldStatus.Right) {
-            encoderDrive(14);
-            turnRight(90);
-            encoderDrive(5);
+            encoderDrive(8);
+            turnRight(75);
+            encoderDrive(17);
             turnLeft(90);
-            encoderDrive(25);
+            encoderDrive(35);
+            //turnLeft(90);
         } else {
-            encoderDrive(30);
+            //Left
+            encoderDrive(8);
+            turnLeft(75);
+            encoderDrive(17);
+            turnRight(90);
+            encoderDrive(35);
+
+            //turnRight(90);
         }
     }
 
-    protected void depotSampleRun() {
-        GoldStatus pos = sampleProbe();
-        if (pos == GoldStatus.Left) {
-            turnLeft(90);
-            encoderDrive(10);
-            turnRight(75);
-            encoderDrive(20);
-            turnRight(90);
-            dropFlag();
-            sleep(3000);
-            resetFlag();
+
+    protected void flagUpDown(){
+        dropFlag();
+        sleep(3000);
+        resetFlag();
+    }
+
+    protected void depotSampleRun(GoldStatus pos) {
+        if (pos == GoldStatus.Center) {
+            encoderDrive(45);
+            flagUpDown();
         } else if (pos == GoldStatus.Right) {
-            turnRight(90);
-            encoderDrive(10);
-            turnLeft(75);
-            encoderDrive(20);
+            encoderDrive(8);
+            turnRight(75);
+            encoderDrive(17);
             turnLeft(90);
-            dropFlag();
-            sleep(3000);
-            resetFlag();
+            encoderDrive(35);
+            //turnLeft(90);
+            flagUpDown();
         } else {
-            encoderDrive(30);
-            dropFlag();
-            sleep(3000);
-            resetFlag();
+            //Left
+            encoderDrive(8);
+            turnLeft(75);
+            encoderDrive(17);
+            turnRight(90);
+            encoderDrive(35);
+            flagUpDown();
+
+            //turnRight(90);
         }
     }
 
