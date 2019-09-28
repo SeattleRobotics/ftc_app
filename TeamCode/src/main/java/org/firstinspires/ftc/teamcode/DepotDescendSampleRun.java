@@ -107,7 +107,10 @@ public abstract class DepotDescendSampleRun extends StandardChassis {
 
             pos = loopSampling();
 
-            descendFromLander();
+
+          boolean goBackDown = (delay > 0);
+
+            descendFromLander(goBackDown);
 
              if (pos == GoldStatus.Unknown)
                 pos = sampleProbe();

@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 /**
  *
  */
-@TeleOp(name="QuickSilver TeleOp", group="ZZZZ")
+@TeleOp(name="QuickSilver TeleOp", group="A")
 public class QuickSilverController extends OpMode {
 
     // Motors connected to the hub.
@@ -155,7 +155,7 @@ public class QuickSilverController extends OpMode {
 
         if (useMotors) {
             // Switch the directions for driving!
-            if (gamepad1.back){
+            if (gamepad1.start){
                 switchFront = !switchFront;
                 sleep(500);
             }
@@ -236,6 +236,7 @@ public class QuickSilverController extends OpMode {
                 telemetry.addData("Motor", "full rght-back:%02.1f, %d", rightBackPower, motorBackRight.getCurrentPosition());
                 telemetry.addData("Motor", "full left-frnt:%02.1f, %d", leftFrontPower, motorFrontLeft.getCurrentPosition());
                 telemetry.addData("Motor", "full rght-frnt:%02.1f, %d", rightFrontPower, motorFrontRight.getCurrentPosition());
+                telemetry.addData("Motor", "SwitchFront ;%b", switchFront);
             }
         }
 

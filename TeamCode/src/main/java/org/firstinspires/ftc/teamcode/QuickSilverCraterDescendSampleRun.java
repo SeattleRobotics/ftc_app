@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode;
 @Autonomous(name="Quick; CraterDescendSample", group="AAQuickSilver")
 public class QuickSilverCraterDescendSampleRun extends CraterDescendSampleRun {
     public QuickSilverCraterDescendSampleRun() {
-        super(ChassisConfig.forQuickSilver());
+        super(ChassisConfig.forQuickSilver(),0);
     }
 }
 
